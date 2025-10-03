@@ -7,7 +7,7 @@ metadata:
     app: {{ .Values.app.name }}
 spec:
   selector:
-    app: {{ .Values.app.name }}-container-label
+    app: {{ .Values.app.name }}
   ports:
   - port: {{ .Values.app.service.port }}
     targetPort: {{ .Values.app.service.targetPort }}
