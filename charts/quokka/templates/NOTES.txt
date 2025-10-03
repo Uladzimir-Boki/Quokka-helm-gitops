@@ -1,0 +1,14 @@
+Quokka App has been deployed!
+
+{{- if .Values.ingress.enabled }}
+Access the application via: {{ (index .Values.ingress.hosts 0).host }}
+{{- else }}
+To access the application, use:
+  kubectl port-forward -n {{ .Values.namespace.name }} svc/{{ .Values.app.name }}-service 8080:80
+{{- end }}
+
+ClusterIssuer status:
+  kubectl get clusterissuer {{ .Values.clusterIssuer.name }}
+
+Certificate status:
+  kubectl get certificate -n {{ .Values.namespace.name }}

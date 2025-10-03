@@ -1,0 +1,55 @@
+# Namespace configuration
+namespace:
+  name: quokka
+  labels:
+    name: quokka
+
+# ClusterIssuer configuration
+clusterIssuer:
+  enabled: true
+  name: letsencrypt-prod
+  email: muafan2018@gmail.com
+  server: https://acme-v02.api.letsencrypt.org/directory 
+  privateKeySecretName: letsencrypt-prod-private-key
+  cloudDNS:
+    project: k8s-test-472408
+    serviceAccountSecretName: clouddns-dns01-solver-sa
+    serviceAccountKey: key.json
+
+# Application configuration
+app:
+  name: quokka-app
+  image:
+    repository: us-central1-docker.pkg.dev/k8s-test-472408/quokka-image-repository/quokka
+    tag: initial
+    pullPolicy: IfNotPresent
+  service:
+    type: NodePort
+    port: 80
+    targetPort: 5000
+  resources:
+    limits:
+      memory: "128Mi"
+      cpu: "500m"
+    requests:
+      memory: "64Mi"
+      cpu: "250m"
+
+# Ingress configuration
+ingress:
+  enabled: true
+  className: gce
+  name: quokka-app-ingress
+  hosts:
+    - host: my-app-domain-cert-manager-test.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - hosts:
+        - my-app-domain-cert-manager-test.com
+      secretName: quokka-app-tls-secret
+  annotations:
+    kubernetes.io/ingress.class: gce
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    kubernetes.io/ingress.global-static-ip-name: web-ip

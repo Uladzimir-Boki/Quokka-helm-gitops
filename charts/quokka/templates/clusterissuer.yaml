@@ -1,0 +1,19 @@
+{{- if .Values.clusterIssuer.enabled }}
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: {{ .Values.clusterIssuer.name }}
+spec:
+  acme:
+    server: {{ .Values.clusterIssuer.server }}
+    email: {{ .Values.clusterIssuer.email }}
+    privateKeySecretRef:
+      name: {{ .Values.clusterIssuer.privateKeySecretName }}
+    solvers:
+    - dns01:
+        cloudDNS:
+          project: {{ .Values.clusterIssuer.cloudDNS.project }}
+          serviceAccountSecretRef:
+            name: {{ .Values.clusterIssuer.cloudDNS.serviceAccountSecretName }}
+            key: {{ .Values.clusterIssuer.cloudDNS.serviceAccountKey }}
+{{- end }}
