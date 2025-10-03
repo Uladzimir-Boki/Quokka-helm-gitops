@@ -21,7 +21,7 @@ app:
   name: quokka-app
   image:
     repository: us-central1-docker.pkg.dev/k8s-test-472408/quokka-image-repository/quokka
-    tag: initial
+    tag: dev-v0.0.4
     pullPolicy: IfNotPresent
   service:
     type: NodePort
